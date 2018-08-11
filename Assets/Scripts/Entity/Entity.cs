@@ -7,6 +7,7 @@ public abstract class Entity : MonoBehaviour
     [Header("Stats")]
     [SerializeField] [Range(0.0f, 1000.0f)] float m_speed = 1.0f;
     [SerializeField] [Range(0.0f, 1000.0f)] float m_maxSpeed = 0.3f;
+    [Space(15)]
     [Header("Physics")]
     [SerializeField] [Range(0.0f, 1000.0f)] float m_speedGravity = 1.0f; // If the entity isn't pressing a key, this is how fast the velocity will return to zero.
     [SerializeField] [Range(0.0f, 1000.0f)] float m_speedRamp = 5.0f;
