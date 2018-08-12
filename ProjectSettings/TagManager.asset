@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Missile
   - Enemy
+  - Bomb
+  - MissilePool
+  - Death
   layers:
   - Default
   - TransparentFX

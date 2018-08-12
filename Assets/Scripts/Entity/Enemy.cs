@@ -5,7 +5,6 @@ using UnityEngine;
 public class Enemy : Entity
 {
     [SerializeField] GameObject m_deathExplosion = null;
-    [SerializeField] GameObject m_dyingExplosions = null;
     [SerializeField] GameObject m_bomb = null;
     [SerializeField] [Range(0, 1000)] int m_pointValue;
     [SerializeField] [Range(0.0f, 1000.0f)] float m_health;
@@ -43,7 +42,8 @@ public class Enemy : Entity
 
             if (m_deathTime >= m_deathDuration)
             {
-                Instantiate(m_deathExplosion, transform.position, Quaternion.identity);
+                GameObject expl = Instantiate(m_deathExplosion, transform.position, Quaternion.identity);
+                Destroy(expl, 2.0f);
                 Destroy(gameObject);
             }
         }

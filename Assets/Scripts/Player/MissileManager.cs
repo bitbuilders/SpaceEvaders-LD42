@@ -6,7 +6,7 @@ public class MissileManager : MonoBehaviour
 {
     [SerializeField] GameObject m_missile = null;
     [SerializeField] ParticleSystem[] m_launchPoints;
-    [SerializeField] Transform m_missilePool;
+    [SerializeField] public Transform m_missilePool;
 
     Entity m_owner;
     private int m_launchPoint;
@@ -30,5 +30,10 @@ public class MissileManager : MonoBehaviour
         m_launchPoint %= m_launchPoints.Length;
         GameObject missile = Instantiate(m_missile, position, rotation, m_missilePool);
         missile.GetComponent<Missile>().Owner = m_owner;
+    }
+
+    public void Spawn()
+    {
+        m_missilePool = GameObject.FindGameObjectWithTag("MissilePool").transform;
     }
 }

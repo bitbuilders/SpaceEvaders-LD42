@@ -52,6 +52,7 @@ public class Missile : MonoBehaviour
         Vector3 velocity = Vector3.zero;
         velocity = m_startDir * m_speed * Time.deltaTime;
         velocity += n;
+        velocity.z = 0.0f;
         transform.position += velocity;
 
         float angle = Mathf.Atan2(-velocity.x, velocity.y);

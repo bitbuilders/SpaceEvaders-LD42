@@ -5,6 +5,7 @@ using UnityEngine;
 public class Bomb : MonoBehaviour
 {
     [SerializeField] GameObject m_boom = null;
+    [SerializeField] GameObject m_deathBox = null;
     [SerializeField] Transform m_start = null;
     [SerializeField] Transform m_end = null;
     [SerializeField] [Range(0.0f, 10.0f)] float m_explosionsPerSecond = 0.1f;
@@ -40,6 +41,7 @@ public class Bomb : MonoBehaviour
         Vector3 avg = Vector3.Lerp(m_start.position, m_end.position, m_currentTime / m_duration);
         m_minPos = new Vector3(avg.x - m_explosionWidth, m_start.position.y);
         m_maxPos = new Vector3(avg.x, m_end.position.y);
+        m_deathBox.transform.position = new Vector3(avg.x - 20.0f, 0.0f);
     }
 
     private Vector3 GetRandomPosition()

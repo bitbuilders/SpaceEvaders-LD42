@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BombExploder : MonoBehaviour
 {
+    [SerializeField] GameObject m_boom = null;
     [SerializeField] Color m_rageColor = Color.red;
     [SerializeField] [Range(0.0f, 10.0f)] float m_detonationTime;
     [SerializeField] [Range(0.0f, 10.0f)] float m_scaleAmount = 2.0f;
@@ -11,16 +12,12 @@ public class BombExploder : MonoBehaviour
 
     Material m_material;
     Color m_startColor;
-    Collider2D m_collider;
     float m_time;
 
     private void Start()
     {
         m_material = GetComponentInChildren<Renderer>().material;
         m_startColor = m_material.color;
-        m_collider = GetComponent<Collider2D>();
-        m_collider.enabled = false;
-        print(m_material != null);
     }
 
     private void Update()
@@ -38,6 +35,9 @@ public class BombExploder : MonoBehaviour
         if (m_time >= m_detonationTime)
         {
             // BOOM
+            GameObject boom = Instantiate(m_boom, transform.position, Quaternion.identity);
+            Destroy(boom, 2.5f);
+            Destroy(gameObject);
         }
     }
 }

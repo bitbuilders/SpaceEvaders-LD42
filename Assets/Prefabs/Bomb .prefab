@@ -34,7 +34,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4792945355910690}
-  - component: {fileID: 58964939465257572}
   - component: {fileID: 114793450153304980}
   m_Layer: 0
   m_Name: 'Bomb '
@@ -173,21 +172,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1508469731050802}
   m_Mesh: {fileID: 4300000, guid: 821a23f58034b354aaefe86489b1102b, type: 3}
---- !u!58 &58964939465257572
-CircleCollider2D:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1260545427474510}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 3
 --- !u!108 &108503268958363250
 Light:
   m_ObjectHideFlags: 1
@@ -236,8 +220,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81107ebb6f439e3409e405c2d20d8855, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_boom: {fileID: 1091168589538306, guid: 9db226b4fcd08a7409d763a8196d62e1, type: 2}
   m_rageColor: {r: 1, g: 0, b: 0, a: 1}
-  m_detonationTime: 1.5
+  m_detonationTime: 0.75
   m_scaleAmount: 2
   m_scaleOverTime:
     serializedVersion: 2
@@ -252,8 +237,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.31998605
-      value: 0.6810989
+      time: 0.20749825
+      value: 0.8810958
       inSlope: -0.29879776
       outSlope: -0.29879776
       tangentMode: 0
@@ -261,8 +246,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.67618763
-      value: 0.22698939
+      time: 0.4262029
+      value: 0.58949244
       inSlope: 1.1476247
       outSlope: 1.1476247
       tangentMode: 0
@@ -270,8 +255,26 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 1
-      value: 1
+      time: 0.6342513
+      value: 0.96422476
+      inSlope: 1.9256269
+      outSlope: 1.9256269
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.88575846
+      value: 0.6179305
+      inSlope: 1.2326415
+      outSlope: 1.2326415
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.9958496
+      value: 0.9999962
       inSlope: 0
       outSlope: 0
       tangentMode: 0

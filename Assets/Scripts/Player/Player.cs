@@ -6,6 +6,8 @@ public class Player : Entity
 {
     [SerializeField] [Range(0.0f, 900.0f)] float m_rotationSpeed = 180.0f;
 
+    AudioSource m_audio;
+    private Rigidbody2D m_rigidbody;
     private MissileManager m_missileManager;
     private Quaternion m_lastRotation;
     private Vector3 m_rotation;
@@ -31,7 +33,10 @@ public class Player : Entity
         m_movingRight = false;
         m_movingUp = false;
         m_killSpeed = 0.001f;
+        m_rigidbody = GetComponent<Rigidbody2D>();
+        m_audio = GetComponent<AudioSource>();
         m_missileManager = GetComponent<MissileManager>();
+        Health = 100.0f;
     }
 
     void Update()
@@ -91,6 +96,16 @@ public class Player : Entity
         m_lastRotation = Quaternion.Euler(0.0f, 0.0f, m_rotation.z);
 
         transform.position += m_lastRotation * Velocity;
+
+
+
+        if (Health <= 0.0f)
+        {
+            // Die
+            Spawn();
+            gameObject.SetActive(false);
+            Game.Instance.LoadScene("Lose");
+        }
     }
 
     private void FixedUpdate()
@@ -125,7 +140,39 @@ public class Player : Entity
         if (Input.GetButtonDown("Fire1"))
         {
             Quaternion rotation = Quaternion.Euler(0.0f, 0.0f, m_rotation.z);
-            m_missileManager.Fire(rotation);
+            if (m_missileManager.m_missilePool == null)
+            {
+                GameObject go = GameObject.FindGameObjectWithTag("MissilePool");
+                if (go != null)
+                {
+                    m_missileManager.m_missilePool = go.transform;
+                }
+            }
+            if (m_missileManager.m_missilePool != null)
+                m_missileManager.Fire(rotation);
+            m_audio.Play();
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Bomb"))
+        {
+            Health -= 20.0f;
+            CameraController.Instance.Shake(1.0f, 1.5f, 1.5f);
+        }
+        else if (collision.CompareTag("Death"))
+        {
+            Health -= 100.0f;
+        }
+    }
+
+    public void Spawn()
+    {
+        Quaternion rot = Quaternion.Euler(0.0f, 0.0f, -90.0f);
+        transform.SetPositionAndRotation(Vector3.zero, rot);
+        transform.localEulerAngles = new Vector3(0.0f, 0.0f, -90.0f);
+        Velocity = Vector3.zero;
+        Health = 100.0f;
     }
 }
