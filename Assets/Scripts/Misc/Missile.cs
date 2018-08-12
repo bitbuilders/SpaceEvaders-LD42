@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Missile : MonoBehaviour
 {
+    [SerializeField] GameObject m_explosionTemplate = null;
     [SerializeField] [Range(0.0f, 60.0f)] float m_lifetime = 5.0f;
     [SerializeField] [Range(0.0f, 100.0f)] float m_speed = 10.0f;
     [SerializeField] [Range(0.0f, 5.0f)] float m_warmupTime = 0.2f;
@@ -64,6 +65,7 @@ public class Missile : MonoBehaviour
 
     private void Explode()
     {
+        Instantiate(m_explosionTemplate, transform.position, Quaternion.identity, transform.parent);
         Destroy(gameObject);
     }
 }

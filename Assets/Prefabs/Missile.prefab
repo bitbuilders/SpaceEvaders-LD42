@@ -548,6 +548,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b57b49aa4e2eed2409f0abc0bc7086c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_explosionTemplate: {fileID: 1915828469638800, guid: 760764c68187e714d9c99d760f3df5be,
+    type: 2}
   m_lifetime: 2
   m_speed: 45
   m_warmupTime: 1

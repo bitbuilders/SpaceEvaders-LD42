@@ -27,6 +27,7 @@ public class Player : Entity
             Destroy(gameObject);
         }
 
+        m_rotation = transform.rotation.eulerAngles;
         m_movingRight = false;
         m_movingUp = false;
         m_killSpeed = 0.001f;
