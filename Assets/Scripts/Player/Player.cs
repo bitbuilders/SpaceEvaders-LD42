@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class Player : Entity
 {
+    [SerializeField] [Range(0.0f, 900.0f)] float m_rotationSpeed = 180.0f;
+
+    private MissileManager m_missileManager;
+    private Quaternion m_lastRotation;
+    private Vector3 m_rotation;
     private Vector2 m_ramp;
     private float m_killSpeed;
     private bool m_movingRight;
@@ -24,11 +29,14 @@ public class Player : Entity
 
         m_movingRight = false;
         m_movingUp = false;
-        m_killSpeed = 0.1f;
+        m_killSpeed = 0.001f;
+        m_missileManager = GetComponent<MissileManager>();
     }
 
     void Update()
     {
+        ProcessInput();
+
         float xVelocity = Input.GetAxis("MoveRight");
         float yVelocity = Input.GetAxis("MoveUp");
         m_movingRight = (xVelocity != 0.0f);
@@ -49,40 +57,50 @@ public class Player : Entity
         }
         else
         {
-            m_ramp.y -= Time.deltaTime * (SpeedRamp + 10.0f); ;
-        }
-        if (m_movingRight && m_movingUp)
-        {
-            // Limit velocity when traveling diagonally
-            m_ramp.x = Mathf.Clamp(m_ramp.x, 0.0f, 0.75f);
-            m_ramp.y = Mathf.Clamp(m_ramp.y, 0.0f, 0.75f);
-        }
-        else
-        {
-            m_ramp.x = Mathf.Clamp(m_ramp.x, 0.0f, 1.0f);
-            m_ramp.y = Mathf.Clamp(m_ramp.y, 0.0f, 1.0f);
+            m_ramp.y -= Time.deltaTime * (SpeedRamp + 10.0f);
         }
 
+        m_ramp.x = Mathf.Clamp(m_ramp.x, 0.0f, 1.0f);
+        m_ramp.y = Mathf.Clamp(m_ramp.y, 0.0f, 1.0f);
+
+        // Calculate Rotation
+        float reverse = (Velocity.y >= 0.0f) ? 1.0f : -1.0f;
+        m_rotation.z += -xVelocity * m_rotationSpeed * Time.deltaTime * reverse;
+        m_rotation.y += -xVelocity * m_rotationSpeed * Time.deltaTime * reverse;
+        m_rotation.y = Mathf.Clamp(m_rotation.y, -40.0f, 40.0f);
+        if (!m_movingRight && Mathf.Abs(m_rotation.y) > 2.0f)
+        {
+            float oppSin = (m_rotation.y >= 0.0f) ? -1.0f : 1.0f;
+            m_rotation.y += oppSin * m_rotationSpeed * Time.deltaTime;
+        }
+        else if (!m_movingRight)
+        {
+            m_rotation.y = 0.0f;
+        }
 
         // Calculate Velocity
         Vector3 velocity = Velocity;
-        float speed = Speed * Time.deltaTime;
-        velocity.x += xVelocity * m_ramp.x * speed;
-        velocity.y += yVelocity * m_ramp.y * speed;
+        float speed = yVelocity * m_ramp.y * Speed * Time.deltaTime;
+        //velocity.x += xVelocity * m_ramp.x * speed;
+        velocity.y += speed;
+        velocity.y = Mathf.Clamp(velocity.y, 0.0f, MaxSpeed);
         Velocity = velocity;
-        if (Velocity.magnitude >= MaxSpeed)
-        {
-            Velocity = Velocity.normalized * MaxSpeed;
-        }
-        transform.position += Velocity;
-        Velocity *= Dampening;
-        
+
+        transform.rotation = Quaternion.Euler(m_rotation);
+        m_lastRotation = Quaternion.Euler(0.0f, 0.0f, m_rotation.z);
+
+        transform.position += m_lastRotation * Velocity;
+    }
+
+    private void FixedUpdate()
+    {
         // Reduce Velocity if Not Moving
         Vector3 v = Velocity;
         if (!m_movingRight && Mathf.Abs(Velocity.x) >= m_killSpeed)
         {
-            float oppSin = (v.x >= 0.0f) ? -1.0f : 1.0f;
-            v.x += oppSin * SpeedGravity * Time.deltaTime;
+            //float oppSin = (v.x >= 0.0f) ? -1.0f : 1.0f;
+            //v.x += oppSin * SpeedGravity * Time.deltaTime;
+            v.x *= Dampening;
         }
         else if (!m_movingRight)
         {
@@ -90,13 +108,23 @@ public class Player : Entity
         }
         if (!m_movingUp && Mathf.Abs(Velocity.y) >= m_killSpeed)
         {
-            float oppSin = (v.y >= 0.0f) ? -1.0f : 1.0f;
-            v.y += oppSin * SpeedGravity * Time.deltaTime;
+            //float oppSin = (v.y >= 0.0f) ? -1.0f : 1.0f;
+            //v.y += oppSin * SpeedGravity * Time.deltaTime;
+            v.y *= Dampening;
         }
         else if (!m_movingUp)
         {
             v.y = 0.0f;
         }
         Velocity = v;
+    }
+
+    private void ProcessInput()
+    {
+        if (Input.GetButtonDown("Fire1"))
+        {
+            Quaternion rotation = Quaternion.Euler(0.0f, 0.0f, m_rotation.z);
+            m_missileManager.Fire(rotation);
+        }
     }
 }
