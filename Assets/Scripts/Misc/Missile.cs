@@ -5,12 +5,16 @@ using UnityEngine;
 public class Missile : MonoBehaviour
 {
     [SerializeField] GameObject m_explosionTemplate = null;
+    [SerializeField] [Range(0.0f, 100.0f)] float m_damage = 100.0f;
     [SerializeField] [Range(0.0f, 60.0f)] float m_lifetime = 5.0f;
     [SerializeField] [Range(0.0f, 100.0f)] float m_speed = 10.0f;
     [SerializeField] [Range(0.0f, 5.0f)] float m_warmupTime = 0.2f;
     [SerializeField] AnimationCurve m_noiseAmountOverLife = null;
     [SerializeField] AnimationCurve m_noiseStrengthOverLife = null;
     [SerializeField] AnimationCurve m_noiseRateOverLife = null;
+
+    public float Damage { get { return m_damage; } }
+    public Entity Owner { get; set; }
 
     Quaternion m_startRot;
     Vector3 m_startDir;
@@ -63,9 +67,28 @@ public class Missile : MonoBehaviour
         }
     }
 
-    private void Explode()
+    public void Explode()
     {
-        Instantiate(m_explosionTemplate, transform.position, Quaternion.identity, transform.parent);
+        GameObject explosion = Instantiate(m_explosionTemplate, transform.position, Quaternion.identity, transform.parent);
+        Destroy(explosion, 2.5f);
         Destroy(gameObject);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!collision.CompareTag("Player"))
+        {
+            Entity e = collision.GetComponent<Entity>();
+            if (e != null && e.Health > 0.0f)
+            {
+                e.Health -= Damage;
+                if (e.Health <= 0.0f)
+                {
+                    Owner.Score += e.PointValue;
+                }
+            }
+
+            Explode();
+        }
     }
 }

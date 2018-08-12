@@ -19,4 +19,7 @@ public abstract class Entity : MonoBehaviour
     //public float SpeedGravity { get { return m_speedGravity; } protected set { m_speedGravity = value; } }
     public float SpeedRamp { get { return m_speedRamp; } protected set { m_speedRamp = value; } }
     public float Dampening { get { return m_dampening; } protected set { m_dampening = value; } }
+    public float Health { get; set; }
+    public int Score { get; set; }
+    public int PointValue { get; set; }
 }

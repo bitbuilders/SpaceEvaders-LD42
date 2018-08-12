@@ -17,6 +17,7 @@ public class CameraController : MonoBehaviour
 
     private void Start()
     {
+        m_target = FindObjectOfType<Player>().gameObject;
         m_targetPosition = m_target.transform.position;
         m_targetEntity = m_target.GetComponent<Entity>();
     }
