@@ -2879,7 +2879,7 @@ MonoBehaviour:
   m_start: {fileID: 1257362204}
   m_end: {fileID: 702180058}
   m_explosionsPerSecond: 0.01
-  m_duration: 48
+  m_duration: 50
   m_explosionWidth: 10
 --- !u!1 &702180057
 GameObject:
