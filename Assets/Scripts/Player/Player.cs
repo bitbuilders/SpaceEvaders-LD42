@@ -6,6 +6,8 @@ public class Player : Entity
 {
     [SerializeField] [Range(0.0f, 900.0f)] float m_rotationSpeed = 180.0f;
 
+    public float DeltaSpeed { get; private set; }
+
     AudioSource m_audio;
     private Rigidbody2D m_rigidbody;
     private MissileManager m_missileManager;
@@ -95,6 +97,9 @@ public class Player : Entity
         transform.rotation = Quaternion.Euler(m_rotation);
         m_lastRotation = Quaternion.Euler(0.0f, 0.0f, m_rotation.z);
 
+        Vector3 delta = m_lastRotation * Velocity;
+        print(delta.magnitude);
+        DeltaSpeed = delta.magnitude;
         transform.position += m_lastRotation * Velocity;
 
 
@@ -174,5 +179,6 @@ public class Player : Entity
         transform.localEulerAngles = new Vector3(0.0f, 0.0f, -90.0f);
         Velocity = Vector3.zero;
         Health = 100.0f;
+        Score = 0;
     }
 }

@@ -6,10 +6,11 @@ using UnityEngine.UI;
 public class HUD : MonoBehaviour
 {
     [Header("Input")]
-    [SerializeField] Entity m_player = null;
+    [SerializeField] Player m_player = null;
     [Space(15)]
     [Header("Elements")]
     [SerializeField] Text m_score = null;
+    [SerializeField] Text m_speed = null;
 
     private void Start()
     {
@@ -19,5 +20,6 @@ public class HUD : MonoBehaviour
     private void Update()
     {
         m_score.text = m_player.Score.ToString("D8");
+        m_speed.text = m_player.DeltaSpeed.ToString();
     }
 }
